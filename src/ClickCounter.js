@@ -1,7 +1,9 @@
 import React from "react";
 
 function ClickCounter() {
-  //Do not import {useState}  02:04
+  //Do not import {useState} , instead use "React.useState" 02:04
+
+  const [language, setLanguage] = React.useState("en");
 
   const [count, setCount] = React.useState(0);
 
@@ -12,7 +14,6 @@ function ClickCounter() {
   return (
     <div data-test="component-click-counter">
       <h1 data-test="counter-display">
-        {" "}
         The counter is currently<span data-test="count">{count}</span>
       </h1>
       <button data-test="increment-button" onClick={incrementCounter}>

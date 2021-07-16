@@ -13,14 +13,13 @@ const findByTestAttr = (wrapper, val) => {
   return wrapper.find(`[data-test='$(val)']`);
 };
 
-describe("Renders", () => {
+describe("Renders without error", () => {
   // test("the app component renders without crashing", () => {
   //   const wrapper = setup;
   //   console.log(wrapper.debug());
   //   expect(wrapper.exists()).toBe(true);
   // });
-
-  test("ClickCounter", () => {
+  test("ClickCounter ", () => {
     const wrapper = setup();
     const clickCounterComponent = findByTestAttr(
       wrapper,
@@ -31,14 +30,14 @@ describe("Renders", () => {
 
   test("increment button", () => {
     const wrapper = setup();
-    const clickCounterComponent = findByTestAttr(wrapper, "increment-button");
-    expect(clickCounterComponent.length).toBe(1);
+    const button = findByTestAttr(wrapper, "increment-button");
+    expect(button.length).toBe(1);
   });
 
   test("counter display", () => {
     const wrapper = setup();
-    const clickCounterComponent = findByTestAttr(wrapper, "counter-display");
-    expect(clickCounterComponent.length).toBe(1);
+    const counterDisplay = findByTestAttr(wrapper, "counter-display");
+    expect(counterDisplay.length).toBe(1);
   });
 });
 
@@ -48,21 +47,48 @@ test("counter display starts at 0", () => {
   expect(counter).toBe("0");
 });
 
-test("clicking the increment button increments out counter", () => {
-  const wrapper = setup();
-  const button = findByTestAttr(wrapper, "increment-button").text();
-  button.simulate("click");
-  const counter = findByTestAttr(wrapper, "count").text();
-  expect(counter).toBe("1");
-});
+test.todo("context api test");
 
-test("clicking the increment button changes the state", () => {
+describe("clicking the increment button", () => {
+  let originalUseState;
   let mockSetCount = jest.fn();
-  React.useState = jest.fn(() => [0, mockSetCount]);
-  const wrapper = setup();
-  const button = findByTestAttr(wrapper, "increment-button");
-  button.simulate("click");
-  expect(mockSetCount).toHaveBeenCalledWith(1);
+  beforeEach(() => {
+    mockSetCount.mockClear();
+    originalUseState = React.useState;
+  });
+  afterEach(() => {
+    React.useState = originalUseState;
+  });
+  test("changes the state", () => {
+    React.useState = jest.fn(() => [0, mockSetCount]);
+    const wrapper = setup();
+    const button = findByTestAttr(wrapper, "increment-button");
+    button.simulate("click");
+    expect(mockSetCount).toHaveBeenCalledWith(1);
+  });
+
+  test("increments our counter", () => {
+    const wrapper = setup();
+    const button = findByTestAttr(wrapper, "increment-button");
+    button.simulate("click");
+    const counter = findByTestAttr(wrapper, "count").text();
+    expect(counter).toBe("1");
+  });
 });
 
-test("counter display starts");
+// test("clicking the increment button increments out counter", () => {
+//   const wrapper = setup();
+//   const button = findByTestAttr(wrapper, "increment-button").text();
+//   button.simulate("click");
+//   const counter = findByTestAttr(wrapper, "count").text();
+//   expect(counter).toBe("1");
+// });
+
+// test("clicking the increment button changes the state", () => {
+//   let mockSetCount = jest.fn();
+//   React.useState = jest.fn(() => [0, mockSetCount]);
+//   const wrapper = setup();
+//   const button = findByTestAttr(wrapper, "increment-button");
+//   button.simulate("click");
+//   expect(mockSetCount).toHaveBeenCalledWith(1);
+// });
