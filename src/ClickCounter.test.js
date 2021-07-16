@@ -10,7 +10,7 @@ const setup = () => {
 };
 
 const findByTestAttr = (wrapper, val) => {
-  return wrapper.find(`[data-test='$(val)']`);
+  return wrapper.find(`[data-test='${val}']`);
 };
 
 describe("Renders without error", () => {
@@ -19,7 +19,7 @@ describe("Renders without error", () => {
   //   console.log(wrapper.debug());
   //   expect(wrapper.exists()).toBe(true);
   // });
-  test("ClickCounter ", () => {
+  test("ClickCounter", () => {
     const wrapper = setup();
     const clickCounterComponent = findByTestAttr(
       wrapper,
